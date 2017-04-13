@@ -3,14 +3,17 @@
 	"contentVersion": "1.0.0.0",
 	"parameters": {
 		"solver": {
+			"defaultValue": "Raw",
 			"allowedValues": [
-				"Raw",
-				"StarCCM+",
-				"ANSYS_Fluent",
-				"ANSYS_CFX",
 				"ABAQUS",
-				"OpenFOAM",
-				"DataSynapse"
+				"ANSYS_CFX",
+				"ANSYS_Fluent",
+				"ANSYS_Mechanical",
+				"DataSynapse",
+				"Exa_PowerFlow",
+				"OpenFOAM",				
+				"Raw",
+				"StarCCM+"
 			],
 			"type": "String",
 			"metadata": {
@@ -35,7 +38,6 @@
 		"vmSku": {
 			"defaultValue": "Basic_A4",
 			"allowedValues": [
-				"Basic_A4",
 				"Standard_A8",
 				"Standard_A9",
 				"Standard_H16r",
@@ -72,7 +74,7 @@
 				"description": "Admin password on all VMs."
 			}
 		},
-		"PODKey": {
+		"license": {
 			"maxLength": 30,
 			"defaultValue": "",
 			"type": "String",
@@ -128,7 +130,7 @@
 		"publicIPAddressID": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]",
 		"nicName": "[concat(variables('namingInfix'), 'nic')]",
 		"ipConfigName": "[concat(variables('namingInfix'), 'ipconfig')]",
-		"scriptUrl": "https://raw.githubusercontent.com/tanewill/5clickTemplates/master/RawStarCCMCluster/",
+		"scriptUrl": "https://raw.githubusercontent.com/tanewill/AHOD-HPC/master/",
 		"cnSetupScript": "cn-setup.sh",
 		"hnSetupScript": "hn-setup.sh",
 		"osType": {
@@ -138,12 +140,20 @@
 			"version": "latest"
 		},
 		"imageReference": "[variables('osType')]",
+		"JBosType": {
+			"publisher": "OpenLogic",
+			"offer": "CentOS",
+			"sku": "7.1",
+			"version": "latest"
+		},
+		"JBimageReference": "[variables('JBosType')]",
 		"vmScripts": {
 			"scriptsToDownload": [
 				"[concat(variables('scriptUrl'), 'cn-setup.sh')]",
 				"[concat(variables('scriptUrl'), 'hn-setup.sh')]",
-				"[concat(variables('scriptUrl'), 'install-ccm.sh')]",
-				"[concat(variables('scriptUrl'), 'clusRun.sh')]"
+				"[concat(variables('scriptUrl'), 'clusRun.sh')]",
+				"[concat(variables('scriptUrl'), 'install-', parameters('solver'), '.sh')]"
+				
 			],
 			"commandToExecute": ""
 		},
@@ -230,7 +240,7 @@
 		"location": "[parameters('resourceLocation')]",
 		"properties": {
 			"hardwareProfile": {
-				"vmSize": "[parameters('vmSku')]"
+				"vmSize": "Standard_D4_v2"
 			},
 			"osProfile": {
 				"computerName": "[variables('jumpBoxName')]",
@@ -238,7 +248,7 @@
 				"adminPassword": "[parameters('adminPassword')]"
 			},
 			"storageProfile": {
-				"imageReference": "[variables('imageReference')]",
+				"imageReference": "[variables('JBimageReference')]",
 				"osDisk": {
 					"name": "[variables('jumpBoxOSDiskName')]",
 					"vhd": {
@@ -275,7 +285,7 @@
 				"autoUpgradeMinorVersion": true,
 				"settings": {
 					"fileUris": "[variables('vmScripts').scriptsToDownload]",
-					"commandToExecute": "[concat('bash ', 'hn-setup.sh ',parameters('adminUsername'),' ',parameters('adminPassword'),' ',parameters('PODKey'),' ',parameters('downloadModel')) ]",
+					"commandToExecute": "[concat('bash ', 'hn-setup.sh ',parameters('solver'),' ',parameters('adminUsername'),' ',parameters('adminPassword'),' ',parameters('downloadModel'),' ',parameters('license')) ]",
 					"timestamp": 4
 				}
 			},
