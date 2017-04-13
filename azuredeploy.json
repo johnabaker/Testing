@@ -11,7 +11,7 @@
 				"ANSYS_Mechanical",
 				"DataSynapse",
 				"Exa_PowerFlow",
-				"OpenFOAM",				
+				"OpenFOAM",	
 				"Raw",
 				"StarCCM"
 			],
@@ -96,8 +96,8 @@
 				"CCM_LeMans_17M.tgz",
 				"CCM_LeMans_100M.tgz",
 				"CCM_LeMans_514M.tgz",
-				"CCM_VTM_68M.tgz"				
-			]
+				"CCM_VTM_68M.tgz"			
+			],
 			"type": "String",
 			"metadata": {
 				"description": "Which benchmark model would you like to download, make sure to select the appropriate model for your solver"
