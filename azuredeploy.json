@@ -83,7 +83,7 @@
 			}
 		},
 		"downloadModel": {
-			"defaultValue": "civil.sim.tgz",
+			"defaultValue": "",
 			"allowedValues": [
 				"",
 				"ABAQUS_newStdPerf-1.tgz",
