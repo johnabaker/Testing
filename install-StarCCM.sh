@@ -11,9 +11,9 @@ mkdir /mnt/resource/scratch/benchmark
 
 wget -q http://azbenchmarkstorage.blob.core.windows.net/cdadapcobenchmarkstorage/runAndRecord.java -O /mnt/resource/scratch/benchmark/runAndRecord.java
 wget -q http://azbenchmarkstorage.blob.core.windows.net/cdadapcobenchmarkstorage/STAR-CCM+11.04.012_01_linux-x86_64-r8.tar.gz -O /mnt/resource/scratch/STAR-CCM+11.04.012_01_linux-x86_64-r8.tar.gz
-wget -q http://azbenchmarkstorage.blob.core.windows.net/cdadapcobenchmarkstorage/$DOWN -O /mnt/resource/scratch/$DOWN
+wget -q http://azbenchmarkstorage.blob.core.windows.net/cdadapcobenchmarkstorage/$DOWN -O /mnt/resource/scratch/benchmark/$DOWN
 
-tar -xf /mnt/resource/scratch/$DOWN -C /mnt/resource/scratch
+tar -xf /mnt/resource/scratch/benchmark/$DOWN -C /mnt/resource/scratch/benchmark
 tar -xzf /mnt/resource/scratch/STAR-CCM+11.04.012_01_linux-x86_64-r8.tar.gz -C /mnt/resource/scratch/INSTALLERS/
 
 cd /mnt/resource/scratch/INSTALLERS/starccm+_11.04.012/

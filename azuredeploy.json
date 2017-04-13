@@ -36,7 +36,7 @@
 			}
 		},
 		"vmSku": {
-			"defaultValue": "Basic_A4",
+			"defaultValue": "Standard_H16r",
 			"allowedValues": [
 				"Standard_A8",
 				"Standard_A9",
@@ -86,13 +86,18 @@
 			"defaultValue": "civil.sim.tgz",
 			"allowedValues": [
 				"",
-				"civil.sim.tgz",
-				"LeMans_17M.tgz",
-				"LeMans_100M.tgz",
-				"LeMans_514M.tgz",
-				"VTM_68M.tgz"
-				
-			],
+				"ABAQUS_newStdPerf-1.tgz",
+				"ABAQUS_newStdPerf-2.tgz",
+				"ABAQUS_newStdPerf-3.tgz",
+				"ABAQUS_newStdPerf-4.tgz",
+				"ABAQUS_newXplPerf.tgz",
+				"ABAQUS_oldStdPerf.tgz",
+				"CCM_civil.sim.tgz",
+				"CCM_LeMans_17M.tgz",
+				"CCM_LeMans_100M.tgz",
+				"CCM_LeMans_514M.tgz",
+				"CCM_VTM_68M.tgz"				
+			]
 			"type": "String",
 			"metadata": {
 				"description": "Which benchmark model would you like to download, make sure to select the appropriate model for your solver"
