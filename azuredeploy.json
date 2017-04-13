@@ -20,21 +20,6 @@
 				"description": "Please select the solver that you would like to test"
 			}
 		},
-		"resourceLocation": {
-			"allowedValues": [
-				"East US",
-				"West US",
-				"South Central US",
-				"North Central US",
-				"North Europe",
-				"West Europe",
-				"Japan East"
-			],
-			"type": "String",
-			"metadata": {
-				"description": "Azure region where all resources will be deployed. This is distinct from resource group location."
-			}
-		},
 		"vmSku": {
 			"defaultValue": "Standard_H16r",
 			"allowedValues": [
@@ -108,6 +93,7 @@
 		}
 	},
 	"variables": {
+		"resourceLocation": "[resourceGroup().location]",
 		"namingInfix": "[toLower(substring(concat(parameters('vmssName'), uniqueString(resourceGroup().id)), 0, 9))]",
 		"longNamingInfix": "[toLower(parameters('vmssName'))]",
 		"jumpBoxName": "[concat(variables('longNamingInfix'),'jb')]",
@@ -173,7 +159,7 @@
 		"type": "Microsoft.Network/virtualNetworks",
 		"name": "[variables('virtualNetworkName')]",
 		"apiVersion": "[variables('networkApiVersion')]",
-		"location": "[parameters('resourceLocation')]",
+		"location": "[variables('resourceLocation')]",
 		"properties": {
 			"addressSpace": {
 				"addressPrefixes": [
@@ -191,7 +177,7 @@
 		"type": "Microsoft.Storage/storageAccounts",
 		"name": "[variables('jumpBoxSAName')]",
 		"apiVersion": "[variables('storageApiVersion')]",
-		"location": "[parameters('resourceLocation')]",
+		"location": "[variables('resourceLocation')]",
 		"properties": {
 			"accountType": "[variables('storageAccountType')]"
 		}
@@ -199,7 +185,7 @@
 		"type": "Microsoft.Storage/storageAccounts",
 		"name": "[concat(variables('uniqueStringArray')[copyIndex()], variables('newStorageAccountSuffix'))]",
 		"apiVersion": "[variables('storageApiVersion')]",
-		"location": "[parameters('resourceLocation')]",
+		"location": "[variables('resourceLocation')]",
 		"copy": {
 			"name": "storageLoop",
 			"count": "[variables('saCount')]"
@@ -211,7 +197,7 @@
 		"type": "Microsoft.Network/publicIPAddresses",
 		"name": "[variables('publicIPAddressName')]",
 		"apiVersion": "[variables('networkApiVersion')]",
-		"location": "[parameters('resourceLocation')]",
+		"location": "[variables('resourceLocation')]",
 		"properties": {
 			"publicIPAllocationMethod": "Dynamic",
 			"dnsSettings": {
@@ -222,7 +208,7 @@
 		"type": "Microsoft.Network/networkInterfaces",
 		"name": "[variables('jumpBoxNicName')]",
 		"apiVersion": "[variables('networkApiVersion')]",
-		"location": "[parameters('resourceLocation')]",
+		"location": "[variables('resourceLocation')]",
 		"properties": {
 			"ipConfigurations": [{
 				"name": "[variables('jumpBoxIPConfigName')]",
@@ -245,7 +231,7 @@
 		"type": "Microsoft.Compute/virtualMachines",
 		"name": "[variables('jumpBoxName')]",
 		"apiVersion": "[variables('computeApiVersion')]",
-		"location": "[parameters('resourceLocation')]",
+		"location": "[variables('resourceLocation')]",
 		"properties": {
 			"hardwareProfile": {
 				"vmSize": "Standard_D4_v2"
@@ -282,7 +268,7 @@
 			"type": "extensions",
 			"name": "masterExtension",
 			"apiVersion": "[variables('storageApiVersion')]",
-			"location": "[parameters('resourceLocation')]",
+			"location": "[variables('resourceLocation')]",
 			"tags": {
 				"displayName": "masterExtension"
 			},
@@ -315,7 +301,7 @@
 		},
 		"name": "[variables('namingInfix')]",
 		"apiVersion": "[variables('computeApiVersion')]",
-		"location": "[parameters('resourceLocation')]",
+		"location": "[variables('resourceLocation')]",
 		"properties": {
 			"overprovision": "true",
 			"upgradePolicy": {
