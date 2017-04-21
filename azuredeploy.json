@@ -80,11 +80,12 @@
 				"ANSYS_Fluent_aircraft_wing_14m.tar",
 				"ANSYS_Fluent_f1_racecar_140m.tar",
 				"ANSYS_Fluent_sedan_4m.tar",
-				"CCM_civil.sim.tgz",
+				"CCM_Civil.tgz",
 				"CCM_LeMans_17M.tgz",
 				"CCM_LeMans_100M.tgz",
 				"CCM_LeMans_514M.tgz",
-				"CCM_VTM_68M.tgz"			
+				"CCM_VTM_68M.tgz",
+				"CCM_VTM_178M.tgz"			
 			],
 			"type": "String",
 			"metadata": {
