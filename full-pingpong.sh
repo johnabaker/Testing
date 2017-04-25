@@ -1,5 +1,5 @@
-for NODE in `cat nodenames.txt`; \
-    do for NODE2 in `cat nodenames.txt`; \
+for NODE in `cat ~/nodenames.txt`; \
+    do for NODE2 in `cat ~/nodenames.txt`; \
         do /opt/intel/impi/5.1.3.181/bin64/mpirun \
             -hosts $NODE,$NODE2 -ppn 1 -n 2 \
             -env I_MPI_FABRICS=dapl \
