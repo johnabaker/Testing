@@ -13,7 +13,9 @@
 				"Exa_PowerFlow",
 				"OpenFOAM",	
 				"Raw",
-				"StarCCM"
+				"StarCCM-10",
+				"StarCCM-11",
+				"StarCCM-12"
 			],
 			"type": "String",
 			"metadata": {
