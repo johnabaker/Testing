@@ -25,5 +25,7 @@ mount -a
 ln -s /opt/intel/impi/5.1.3.181/intel64/bin/ /opt/intel/impi/5.1.3.181/bin
 ln -s /opt/intel/impi/5.1.3.181/lib64/ /opt/intel/impi/5.1.3.181/lib
 chown -R $USER:$USER /mnt/resource/
+wget -q https://raw.githubusercontent.com/tanewill/AHOD-HPC/master/full-pingpong.sh -O /home/$USER/full-pingpong.sh
+chown $USER:$USER /home/$USER/full-pingpong.sh
 
 df
