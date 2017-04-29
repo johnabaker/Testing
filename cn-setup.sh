@@ -3,7 +3,7 @@ echo ##################################################
 echo ############# Compute Node Setup #################
 echo ##################################################
 IPPRE=$1
-USER=`whoami`
+USER=$2
 yum install -y -q nfs-utils
 mkdir -p /mnt/nfsshare
 mkdir -p /mnt/resource/scratch
@@ -21,6 +21,14 @@ echo "$IPPRE:/mnt/nfsshare    /mnt/nfsshare   nfs defaults 0 0" | tee -a /etc/fs
 echo "$IPPRE:/mnt/resource/scratch    /mnt/resource/scratch   nfs defaults 0 0" | tee -a /etc/fstab
 showmount -e 10.0.0.4
 mount -a
+
+echo export FLUENT_HOSTNAME=$HOST >> /home/$USER/.bashrc
+echo export INTELMPI_ROOT=/opt/intel/impi/5.1.3.181 >> /home/$USER/.bashrc
+echo export I_MPI_FABRICS=shm:dapl >> /home/$USER/.bashrc
+echo export I_MPI_DAPL_PROVIDER=ofa-v2-ib0 >> /home/$USER/.bashrc
+echo export I_MPI_ROOT=/opt/intel/compilers_and_libraries_2016.2.181/linux/mpi >> /home/$USER/.bashrc
+echo export PATH=/mnt/resource/scratch/applications/ansys_inc/v172/fluent/bin:/opt/intel/impi/5.1.3.181/bin64:$PATH >> /home/$USER/.bashrc
+echo export I_MPI_DYNAMIC_CONNECTION=0 >> /home/$USER/.bashrc
 
 ln -s /opt/intel/impi/5.1.3.181/intel64/bin/ /opt/intel/impi/5.1.3.181/bin
 ln -s /opt/intel/impi/5.1.3.181/lib64/ /opt/intel/impi/5.1.3.181/lib
