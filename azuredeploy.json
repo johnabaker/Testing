@@ -70,9 +70,9 @@
 			}
 		},
 		"downloadModel": {
-			"defaultValue": "",
+			"defaultValue": "None",
 			"allowedValues": [
-				"",
+				"None",
 				"ABAQUS_newStdPerf-1.tgz",
 				"ABAQUS_newStdPerf-2.tgz",
 				"ABAQUS_newStdPerf-3.tgz",
