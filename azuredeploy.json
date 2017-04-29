@@ -63,7 +63,7 @@
 		},
 		"license": {
 			"maxLength": 30,
-			"defaultValue": "",
+			"defaultValue": "0.0.0.0",
 			"type": "String",
 			"metadata": {
 				"description": "This is the IP address of the license server or POD key for the application. If license is unknown or not required simply enter 0.0.0.0, if a license is required, but unknown the application will not work"
