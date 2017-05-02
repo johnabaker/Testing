@@ -13,6 +13,7 @@
 				"Exa_PowerFlow",
 				"OpenFOAM",
 				"Raw",
+				"Raw_HPC",
 				"StarCCM-10",
 				"StarCCM-11",
 				"StarCCM-12"
@@ -27,12 +28,26 @@
 			"allowedValues": [
 				"Standard_A8",
 				"Standard_A9",
+				"Standard_DS14_v2",
+				"Standard_DS15_v2",
 				"Standard_H16r",
 				"Standard_H16mr"				
 			],
 			"type": "String",
 			"metadata": {
 				"description": "Which instance would you like to deploy to? Not all VMs are available in all regions"
+			}
+		},
+		"osSKU": {
+			"type": "string",
+			"defaultValue": "CentOS_7.2",
+			"allowedValues": [
+				"CentOS_6.7",
+				"CentOS_7.1-HPC",
+				"CentOS_7.2"
+			],
+			"metadata": {
+				"description": "The OS Sku of the compute nodes"
 			}
 		},
 		"vmssName": {
@@ -130,11 +145,32 @@
 		"scriptUrl": "https://raw.githubusercontent.com/tanewill/AHOD-HPC/master/",
 		"cnSetupScript": "cn-setup.sh",
 		"hnSetupScript": "hn-setup.sh",
-		"osType": {
-			"publisher": "OpenLogic",
-			"offer": "CentOS-HPC",
-			"sku": "7.1",
-			"version": "latest"
+		"osType": "[variables('computeImages')[parameters('osSKU')]]",
+		"computeImages": {
+			"CentOS_6.7": {
+				"publisher": "OpenLogic",
+				"offer": "CentOS",
+				"sku": "6.7",
+				"version": "latest"
+			},
+			"CentOS_7.2": {
+				"publisher": "OpenLogic",
+				"offer": "CentOS",
+				"sku": "7.2",
+				"version": "latest"
+			},
+			"CentOS_7.1-HPC": {
+				"publisher": "OpenLogic",
+				"offer": "CentOS-HPC",
+				"sku": "7.1",
+				"version": "latest"
+			},
+			"RHEL_7.2": {
+				"publisher": "RedHat",
+				"offer": "RHEL",
+				"sku": "7.2",
+				"version": "latest"
+			}
 		},
 		"imageReference": "[variables('osType')]",
 		"JBosType": {
