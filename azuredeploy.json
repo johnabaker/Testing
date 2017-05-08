@@ -337,12 +337,8 @@
 			},
 			"virtualMachineProfile": {
 				"storageProfile": {
-					"imageReference": {
-						"publisher": "[variables('imagePublisher')]",
-						"offer": "[variables('imageOffer')]",
-						"sku": "[variables('osVersion')]",
-						"version": "latest"
-					}
+					"imageReference": "[variables('osType')]"
+					
 				},
 				"osDisk": {
 					"caching": "ReadWrite",
