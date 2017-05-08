@@ -346,7 +346,7 @@
 				},
 				"dataDisks": [
 					{
-					"diskSizeGB": "[parameters('diskSizeGB')]",
+					"diskSizeGB": "512",
 					"lun": 0,
 					"caching": "[parameters('dataDiskHostCaching')]",
 					"createOption": "Empty"
