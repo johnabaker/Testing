@@ -274,7 +274,7 @@
 				"osDisk": {
 					"name": "[variables('jumpBoxOSDiskName')]",
 					"vhd": {
-						"uri": "[concat('http://',variables('jumpBoxSAName'),'.blob.core.windows.net/',variables('jumpBoxVHDContainerName'),'/',variables('jumpBoxOSDiskName'),'.vhd')]"
+						"uri": "[concat('http://',variables('storageAccountName'),'.blob.core.windows.net/',variables('jumpBoxVHDContainerName'),'/',variables('jumpBoxOSDiskName'),'.vhd')]"
 					},
 					"caching": "ReadWrite",
 					"createOption": "FromImage"
@@ -288,7 +288,7 @@
 			"diagnosticsProfile": {
 				"bootDiagnostics": {
 					"enabled": "true",
-					"storageUri": "[concat('http://',variables('jumpBoxSAName'),'.blob.core.windows.net')]"
+					"storageUri": "[concat('http://',variables('storageAccountName'),'.blob.core.windows.net')]"
 				}
 			}
 		},
@@ -317,7 +317,7 @@
 			]
 		}],
 		"dependsOn": [
-			"[concat('Microsoft.Storage/storageAccounts/', variables('jumpBoxSAName'))]",
+			"[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
 			"[concat('Microsoft.Network/networkInterfaces/', variables('jumpBoxNicName'))]"
 		]
 	}, {
@@ -380,7 +380,7 @@
 			}
 		},
 		"dependsOn": [
-			"storageLoop",
+			"[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
 			"[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
 		]
 	}]
