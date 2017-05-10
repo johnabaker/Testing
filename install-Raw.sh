@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 yum y update
 sed -i 's/SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
 setenforce 0
@@ -11,6 +12,8 @@ tar xvzf lis-rpms-4.1.3-2.tar.gz
 reboot
 ./install.sh
 reboot
+=======
+>>>>>>> parent of 3f6128d... added raw
 =======
 >>>>>>> parent of 3f6128d... added raw
 =======
