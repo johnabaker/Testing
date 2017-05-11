@@ -13,6 +13,12 @@ Deploy cluster to an existing VNet
     <img src="http://azuredeploy.net/deploybutton.png" />
 </a>
 <br></br>
+Deploy using managed disks (experimental)
+<br></br>
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Ftanewill%2FAHOD-HPC%2Fmaster%2Fazuredeploy_disks.json" target="_blank">
+    <img src="http://azuredeploy.net/deploybutton.png" />
+</a>
+<br></br>
 Visualize architecture
 <br></br>
 <a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Ftanewill%2FAHOD%2Fmaster%2Fazuredeploy.json" target="_blank">
