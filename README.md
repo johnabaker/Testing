@@ -6,10 +6,13 @@ Deploy cluster with a new VNet
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Ftanewill%2FAHOD-HPC%2Fmaster%2Fazuredeploy.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png" />
 </a>
+<br></br>
 Deploy cluster to an existing VNet
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Ftanewill%2FAHOD-HPC%2Fmaster%2Fazuredeploy_existingvnet.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png" />
 </a>
+<br></br>
+Visualize architecture
 <a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Ftanewill%2FAHOD%2Fmaster%2Fazuredeploy.json" target="_blank">
 <img src="http://armviz.io/visualizebutton.png"/>
 </a>
