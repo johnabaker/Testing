@@ -113,7 +113,6 @@
 		"longNamingInfix": "[toLower(parameters('vmssName'))]",
 		"jumpBoxName": "[concat(variables('longNamingInfix'),'jb')]",
 		"jumpBoxSAName": "[concat(uniqueString(concat(resourceGroup().id, variables('newStorageAccountSuffix'), 'jumpboxsa')), 'jb')]",
-		"storageAccountName": "[concat(uniqueString(resourceGroup().id), 'storage')]",
 		"jumpBoxOSDiskName": "[concat(variables('jumpBoxName'), 'osdisk')]",
 		"jumpBoxVHDContainerName": "[concat(variables('jumpBoxName'), 'vhd')]",
 		"jumpBoxIPConfigName": "[concat(variables('jumpBoxName'), 'ipconfig')]",
@@ -173,7 +172,7 @@
 		"type": "Microsoft.Storage/storageAccounts",
 		"name": "[variables('jumpBoxSAName')]",
 		"apiVersion": "[variables('storageApiVersion')]",
-		"location": "[parameters('resourceLocation')]",
+		"location": "[variables('resourceLocation')]",
 		"properties": {
 			"accountType": "[variables('storageAccountType')]"
 		}
@@ -181,7 +180,7 @@
 		"type": "Microsoft.Storage/storageAccounts",
 		"name": "[concat(variables('uniqueStringArray')[copyIndex()], variables('newStorageAccountSuffix'))]",
 		"apiVersion": "[variables('storageApiVersion')]",
-		"location": "[parameters('resourceLocation')]",
+		"location": "[variables('resourceLocation')]",
 		"copy": {
 			"name": "storageLoop",
 			"count": "[variables('saCount')]"
@@ -255,7 +254,7 @@
 			"diagnosticsProfile": {
 				"bootDiagnostics": {
 					"enabled": "true",
-					"storageUri": "[concat('http://',variables('storageAccountName'),'.blob.core.windows.net')]"
+					"storageUri": "[concat('http://',variables('jumpBoxSAName'),'.blob.core.windows.net')]"
 				}
 			}
 		},
@@ -284,7 +283,7 @@
 			]
 		}],
 		"dependsOn": [
-			"[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
+			"[concat('Microsoft.Storage/storageAccounts/', variables('jumpBoxSAName'))]",
 			"[concat('Microsoft.Network/networkInterfaces/', variables('jumpBoxNicName'))]"
 		]
 	}, {
@@ -342,7 +341,7 @@
 			}
 		},
 		"dependsOn": [
-			"[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]"
+			"[concat('Microsoft.Storage/storageAccounts/', variables('jumpBoxSAName'))]"
 		]
 	}]
 }
