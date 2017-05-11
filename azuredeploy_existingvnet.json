@@ -132,8 +132,6 @@
 		"osDiskName":"[concat(variables('namingInfix'), 'osdisk')]",
 		"addressPrefix": "10.0.0.0/16",
 		"subnetPrefix": "10.0.0.0/24",
-		"virtualNetworkName": "[concat(variables('namingInfix'), 'vnet')]",
-		"subnetName": "[concat(variables('namingInfix'), 'subnet')]",
 		"vnetID": "[resourceId(parameters('vnetResourceGroup'),'Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
 		"subnetRef": "[concat(variables('vnetID'),'/subnets/',parameters('subnetName'))]",
 		"publicIPAddressName": "[concat(variables('namingInfix'), 'pip')]",
@@ -334,8 +332,7 @@
 			}
 		},
 		"dependsOn": [
-			"[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
-			"[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
+			"[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]"
 		]
 	}]
 }
