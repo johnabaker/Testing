@@ -101,7 +101,6 @@
 		"longNamingInfix": "[toLower(parameters('vmssName'))]",
 		"jumpBoxName": "[concat(variables('longNamingInfix'),'jb')]",
 		"jumpBoxSAName": "[concat(uniqueString(concat(resourceGroup().id, variables('newStorageAccountSuffix'), 'jumpboxsa')), 'jb')]",
-		"storageAccountName": "[concat(uniqueString(resourceGroup().id), 'storage')]",
 		"jumpBoxOSDiskName": "[concat(variables('jumpBoxName'), 'osdisk')]",
 		"jumpBoxVHDContainerName": "[concat(variables('jumpBoxName'), 'vhd')]",
 		"jumpBoxIPConfigName": "[concat(variables('jumpBoxName'), 'ipconfig')]",
@@ -176,16 +175,27 @@
 				}
 			}]
 		}
+	},{
+		"type": "Microsoft.Storage/storageAccounts",
+		"name": "[variables('jumpBoxSAName')]",
+		"apiVersion": "[variables('storageApiVersion')]",
+		"location": "[variables('resourceLocation')]",
+		"properties": {
+			"accountType": "[variables('storageAccountType')]"
+		}
 	}, {
-      "type": "Microsoft.Storage/storageAccounts",
-      "name": "[variables('storageAccountName')]",
-      "apiVersion": "2016-01-01",
-      "location": "[resourceGroup().location]",
-      "sku": {
-        "name": "[variables('storageAccountType')]"
-      },
-      "kind": "Storage"
-    }, {
+		"type": "Microsoft.Storage/storageAccounts",
+		"name": "[concat(variables('uniqueStringArray')[copyIndex()], variables('newStorageAccountSuffix'))]",
+		"apiVersion": "[variables('storageApiVersion')]",
+		"location": "[variables('resourceLocation')]",
+		"copy": {
+			"name": "storageLoop",
+			"count": "[variables('saCount')]"
+		},
+		"properties": {
+			"accountType": "[variables('storageAccountType')]"
+		}
+	}, {
 		"type": "Microsoft.Network/publicIPAddresses",
 		"name": "[variables('publicIPAddressName')]",
 		"apiVersion": "[variables('networkApiVersion')]",
@@ -234,11 +244,11 @@
 				"adminPassword": "[parameters('adminPassword')]"
 			},
 			"storageProfile": {
-				"imageReference": "[variables('JBimageReference')]",
+				"imageReference": "[variables('imageReference')]",
 				"osDisk": {
 					"name": "[variables('jumpBoxOSDiskName')]",
 					"vhd": {
-						"uri": "[concat('http://',variables('storageAccountName'),'.blob.core.windows.net/',variables('jumpBoxVHDContainerName'),'/',variables('jumpBoxOSDiskName'),'.vhd')]"
+						"uri": "[concat('http://',variables('jumpBoxSAName'),'.blob.core.windows.net/',variables('jumpBoxVHDContainerName'),'/',variables('jumpBoxOSDiskName'),'.vhd')]"
 					},
 					"caching": "ReadWrite",
 					"createOption": "FromImage"
@@ -252,7 +262,7 @@
 			"diagnosticsProfile": {
 				"bootDiagnostics": {
 					"enabled": "true",
-					"storageUri": "[concat('http://',variables('storageAccountName'),'.blob.core.windows.net')]"
+					"storageUri": "[concat('http://',variables('jumpBoxSAName'),'.blob.core.windows.net')]"
 				}
 			}
 		},
@@ -281,7 +291,7 @@
 			]
 		}],
 		"dependsOn": [
-			"[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
+			"[concat('Microsoft.Storage/storageAccounts/', variables('jumpBoxSAName'))]",
 			"[concat('Microsoft.Network/networkInterfaces/', variables('jumpBoxNicName'))]"
 		]
 	}, {
@@ -301,21 +311,20 @@
 			},
 			"virtualMachineProfile": {
 				"storageProfile": {
-					"imageReference": "[variables('osType')]"
-					
+					"osDisk": {
+						"vhdContainers": [
+							"[concat('https://', variables('uniqueStringArray')[0], variables('newStorageAccountSuffix'), '.blob.core.windows.net/', variables('vhdContainerName'))]",
+							"[concat('https://', variables('uniqueStringArray')[1], variables('newStorageAccountSuffix'), '.blob.core.windows.net/', variables('vhdContainerName'))]",
+							"[concat('https://', variables('uniqueStringArray')[2], variables('newStorageAccountSuffix'), '.blob.core.windows.net/', variables('vhdContainerName'))]",
+							"[concat('https://', variables('uniqueStringArray')[3], variables('newStorageAccountSuffix'), '.blob.core.windows.net/', variables('vhdContainerName'))]",
+							"[concat('https://', variables('uniqueStringArray')[4], variables('newStorageAccountSuffix'), '.blob.core.windows.net/', variables('vhdContainerName'))]"
+						],
+						"name": "[variables('osDiskName')]",
+						"caching": "ReadOnly",
+						"createOption": "FromImage"
+					},
+					"imageReference": "[variables('imageReference')]"
 				},
-				"osDisk": {
-					"caching": "ReadWrite",
-					"createOption": "FromImage"
-				},
-				"dataDisks": [
-					{
-					"diskSizeGB": "512",
-					"lun": 0,
-					"caching": "ReadWrite",
-					"createOption": "Empty"
-					}
-				],
 				"osProfile": {
 					"computerNamePrefix": "[variables('namingInfix')]",
 					"adminUsername": "[parameters('adminUsername')]",
@@ -340,7 +349,7 @@
 			}
 		},
 		"dependsOn": [
-			"[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
+			"[concat('Microsoft.Storage/storageAccounts/', variables('jumpBoxSAName'))]",
 			"[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
 		]
 	}]
