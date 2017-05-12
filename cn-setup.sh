@@ -29,6 +29,7 @@ echo export I_MPI_DAPL_PROVIDER=ofa-v2-ib0 >> /home/$USER/.bashrc
 echo export I_MPI_ROOT=/opt/intel/compilers_and_libraries_2016.2.181/linux/mpi >> /home/$USER/.bashrc
 echo export PATH=/opt/intel/impi/5.1.3.181/bin64:$PATH >> /home/$USER/.bashrc
 echo export I_MPI_DYNAMIC_CONNECTION=0 >> /home/$USER/.bashrc
+echo export I_MPI_PIN_PROCESSOR=8 >> /home/$USER/.bashrc
 
 ln -s /opt/intel/impi/5.1.3.181/intel64/bin/ /opt/intel/impi/5.1.3.181/bin
 ln -s /opt/intel/impi/5.1.3.181/lib64/ /opt/intel/impi/5.1.3.181/lib
