@@ -10,7 +10,7 @@ if grep -q $IPPRE /etc/fstab; then FLAG=MOUNTED; else FLAG=NOTMOUNTED; fi
 if [ $FLAG = NOTMOUNTED ] ; then 
     echo $FLAG
     echo installing NFS and mounting
-    yum install -y -qq nfs-utils
+    yum install -y -q nfs-utils
     mkdir -p /mnt/nfsshare
     mkdir -p /mnt/resource/scratch
     chmod 777 /mnt/nfsshare
@@ -39,7 +39,7 @@ if [ $FLAG = NOTMOUNTED ] ; then
 
     ln -s /opt/intel/impi/5.1.3.181/intel64/bin/ /opt/intel/impi/5.1.3.181/bin
     ln -s /opt/intel/impi/5.1.3.181/lib64/ /opt/intel/impi/5.1.3.181/lib
-    chown -R $USER:$USER /mnt/resource/
+    #chown -R $USER:$USER /mnt/resource/
 
     wget -q https://raw.githubusercontent.com/tanewill/AHOD-HPC/master/full-pingpong.sh -O /home/$USER/full-pingpong.sh
     chmod +x /home/$USER/full-pingpong.sh
