@@ -9,7 +9,8 @@ if grep -q $IPPRE /etc/fstab; then FLAG=MOUNTED; else FLAG=NOTMOUNTED; fi
 
 if [ $FLAG = NOTMOUNTED ] ; then 
     echo $FLAG
-    yum install -y -q nfs-utils
+    echo installing NFS and mounting
+    yum install -y -qq nfs-utils
     mkdir -p /mnt/nfsshare
     mkdir -p /mnt/resource/scratch
     chmod 777 /mnt/nfsshare
