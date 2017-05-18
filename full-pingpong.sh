@@ -1,5 +1,5 @@
 #!/bin/bash
-# Example usage: ./full-pingpong.sh | grep -e 512 -e NODES -e usec
+# Example usage: ./full-pingpong.sh | grep -e ' 512 ' -e NODES -e usec
 
 for NODE in `cat ~/nodenames.txt`; \
     do for NODE2 in `cat ~/nodenames.txt`; \
