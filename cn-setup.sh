@@ -4,23 +4,31 @@ echo ############# Compute Node Setup #################
 echo ##################################################
 IPPRE=$1
 USER=$2
-yum install -y -q nfs-utils
-mkdir -p /mnt/nfsshare
-mkdir -p /mnt/resource/scratch
-chmod 777 /mnt/nfsshare
-systemctl enable rpcbind
-systemctl enable nfs-server
-systemctl enable nfs-lock
-systemctl enable nfs-idmap
-systemctl start rpcbind
-systemctl start nfs-server
-systemctl start nfs-lock
-systemctl start nfs-idmap
-localip=`hostname -i | cut --delimiter='.' -f -3`
-echo "$IPPRE:/mnt/nfsshare    /mnt/nfsshare   nfs defaults 0 0" | tee -a /etc/fstab
-echo "$IPPRE:/mnt/resource/scratch    /mnt/resource/scratch   nfs defaults 0 0" | tee -a /etc/fstab
-showmount -e 10.0.0.4
-mount -a
+if grep -q $IPPRE /etc/fstab; then FLAG=MOUNTED; else FLAG=NOTMOUNTED; fi
+
+
+if [ $FLAG = NOTMOUNTED ] ; then 
+    echo $FLAG
+    yum install -y -q nfs-utils
+    mkdir -p /mnt/nfsshare
+    mkdir -p /mnt/resource/scratch
+    chmod 777 /mnt/nfsshare
+    systemctl enable rpcbind
+    systemctl enable nfs-server
+    systemctl enable nfs-lock
+    systemctl enable nfs-idmap
+    systemctl start rpcbind
+    systemctl start nfs-server
+    systemctl start nfs-lock
+    systemctl start nfs-idmap
+    localip=`hostname -i | cut --delimiter='.' -f -3`
+    echo "$IPPRE:/mnt/nfsshare    /mnt/nfsshare   nfs defaults 0 0" | tee -a /etc/fstab
+    echo "$IPPRE:/mnt/resource/scratch    /mnt/resource/scratch   nfs defaults 0 0" | tee -a /etc/fstab
+    mount -a
+    df | grep $IPPRE
+else
+    df | grep $IPPRE
+fi
 
 echo export FLUENT_HOSTNAME=$HOST >> /home/$USER/.bashrc
 echo export INTELMPI_ROOT=/opt/intel/impi/5.1.3.181 >> /home/$USER/.bashrc
