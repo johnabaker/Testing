@@ -4,6 +4,7 @@ echo ############# Compute Node Setup #################
 echo ##################################################
 IPPRE=$1
 USER=$2
+GANG_HOST=$3
 if grep -q $IPPRE /etc/fstab; then FLAG=MOUNTED; else FLAG=NOTMOUNTED; fi
 
 
@@ -42,6 +43,11 @@ if [ $FLAG = NOTMOUNTED ] ; then
     #chown -R $USER:$USER /mnt/resource/
 
     wget -q https://raw.githubusercontent.com/tanewill/AHOD-HPC/master/full-pingpong.sh -O /home/$USER/full-pingpong.sh
+    wget -q 
+    chmod +x install_ganglia.sh
+    ./install_ganglia.sh $GANG_HOST azure 8649
+
+
     chmod +x /home/$USER/full-pingpong.sh
     chown $USER:$USER /home/$USER/full-pingpong.sh
 else
