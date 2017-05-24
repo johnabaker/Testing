@@ -1,7 +1,7 @@
 # AHOD-HPC
 Azure Resource Manager Templates for Ad-Hoc On-Demand HPC clusters
 
-</table>
+<table>
 <tr>
 <td>
 Deploy cluster with a new VNet
