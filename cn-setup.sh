@@ -37,6 +37,7 @@ if [ $FLAG = NOTMOUNTED ] ; then
     echo export PATH=/opt/intel/impi/5.1.3.181/bin64:$PATH >> /home/$USER/.bashrc
     echo export I_MPI_DYNAMIC_CONNECTION=0 >> /home/$USER/.bashrc
     echo export I_MPI_PIN_PROCESSOR=8 >> /home/$USER/.bashrc
+    echo export I_MPI_DAPL_TRANSLATION_CACHE=0 >> /home/$USER/.bashrc
 
     ln -s /opt/intel/impi/5.1.3.181/intel64/bin/ /opt/intel/impi/5.1.3.181/bin
     ln -s /opt/intel/impi/5.1.3.181/lib64/ /opt/intel/impi/5.1.3.181/lib
@@ -44,8 +45,8 @@ if [ $FLAG = NOTMOUNTED ] ; then
 
     wget -q https://raw.githubusercontent.com/tanewill/AHOD-HPC/master/full-pingpong.sh -O /home/$USER/full-pingpong.sh
     wget -q https://raw.githubusercontent.com/tanewill/AHOD-HPC/master/install_ganglia.sh -O /home/$USER/install_ganglia.sh
-    chmod +x install_ganglia.sh
-    ./install_ganglia.sh $GANG_HOST azure 8649
+    chmod +x /home/$USER/install_ganglia.sh
+    sh /home/$USER/install_ganglia.sh $GANG_HOST azure 8649
 
 
     chmod +x /home/$USER/full-pingpong.sh

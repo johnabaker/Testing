@@ -1,29 +1,37 @@
 # AHOD-HPC
 Azure Resource Manager Templates for Ad-Hoc On-Demand HPC clusters
 
+</table>
+<tr>
+<td>
 Deploy cluster with a new VNet
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Ftanewill%2FAHOD-HPC%2Fmaster%2Fazuredeploy.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png" />
 </a>
-<br></br>
+</td>
+<td>
 Deploy cluster to an existing VNet
 <br></br>
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Ftanewill%2FAHOD-HPC%2Fmaster%2Fazuredeploy_existingvnet.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png" />
 </a>
-<br></br>
+</td></tr>
+<tr>
+<td>
 Deploy using managed disks (experimental)
 <br></br>
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Ftanewill%2FAHOD-HPC%2Fmaster%2Fazuredeploy_disks.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png" />
 </a>
-<br></br>
+</td>
+<td>
 Visualize architecture
 <br></br>
 <a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Ftanewill%2FAHOD%2Fmaster%2Fazuredeploy.json" target="_blank">
 <img src="http://armviz.io/visualizebutton.png"/>
 </a>
+</td></tr></table>
 <br></br>
 <b>Quickstart</b>
 
