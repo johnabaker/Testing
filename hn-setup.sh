@@ -37,6 +37,13 @@ yum install -y -q nfs-utils sshpass nmap htop npm
 yum groupinstall -y "X Window System"
 npm install -g azure-cli
 
+myhost=`hostname`
+chmod +x install_ganglia.sh
+./install_ganglia.sh $myhost azure 8649
+exit
+exit
+
+
 echo "/mnt/nfsshare $localip.*(rw,sync,no_root_squash,no_all_squash)" | tee -a /etc/exports
 echo "/mnt/resource/scratch $localip.*(rw,sync,no_root_squash,no_all_squash)" | tee -a /etc/exports
 chmod -R 777 /mnt/nfsshare/
