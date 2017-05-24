@@ -3,14 +3,14 @@ Azure Resource Manager Templates for Ad-Hoc On-Demand HPC clusters
 
 <table>
 <tr>
-<td>
+<td align="center">
 Deploy cluster with a new VNet
 <br>
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Ftanewill%2FAHOD-HPC%2Fmaster%2Fazuredeploy.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png" />
 </a>
 </td>
-<td>
+<td align="center">
 Deploy cluster to an existing VNet
 <br>
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Ftanewill%2FAHOD-HPC%2Fmaster%2Fazuredeploy_existingvnet.json" target="_blank">
@@ -18,14 +18,14 @@ Deploy cluster to an existing VNet
 </a>
 </td></tr>
 <tr>
-<td>
+<td align="center">
 Deploy using managed disks (experimental)
 <br>
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Ftanewill%2FAHOD-HPC%2Fmaster%2Fazuredeploy_disks.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png" />
 </a>
 </td>
-<td>
+<td align="center">
 Visualize architecture
 <br>
 <a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Ftanewill%2FAHOD%2Fmaster%2Fazuredeploy.json" target="_blank">
