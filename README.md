@@ -5,14 +5,12 @@ Azure Resource Manager Templates for Ad-Hoc On-Demand HPC clusters
 <tr>
 <td>
 Deploy cluster with a new VNet
-
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Ftanewill%2FAHOD-HPC%2Fmaster%2Fazuredeploy.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png" />
 </a>
 </td>
 <td>
 Deploy cluster to an existing VNet
-<br></br>
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Ftanewill%2FAHOD-HPC%2Fmaster%2Fazuredeploy_existingvnet.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png" />
 </a>
