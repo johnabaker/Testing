@@ -43,7 +43,7 @@ if [ $FLAG = NOTMOUNTED ] ; then
     #chown -R $USER:$USER /mnt/resource/
 
     wget -q https://raw.githubusercontent.com/tanewill/AHOD-HPC/master/full-pingpong.sh -O /home/$USER/full-pingpong.sh
-    wget -q 
+    wget -q https://raw.githubusercontent.com/tanewill/AHOD-HPC/master/install_ganglia.sh -O /home/$USER/install_ganglia.sh
     chmod +x install_ganglia.sh
     ./install_ganglia.sh $GANG_HOST azure 8649
 
