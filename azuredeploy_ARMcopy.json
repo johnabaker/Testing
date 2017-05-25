@@ -221,7 +221,7 @@
 			"storageProfile": {
 				"imageReference": "[variables('JBimageReference')]",
 				"osDisk": {
-					"name": "[concat('jumpboxvm','disk')]", 
+					"name": "['jumpboxvmdisk']", 
 					"managedDisk": {
 						"storageAccountType": "Standard_LRS"
 					},
