@@ -167,7 +167,7 @@
 				"platformFaultDomainCount": 3
 			}
 		}, {
-			"apiVersion": "[variables('armApiVersion')]",
+			"apiVersion": "[variables('storageApiVersion')]",
 			"type": "Microsoft.Compute/virtualMachines/extensions",
 			"name": "[concat('jumpbox', '/Installation')]",
 			"location": "[resourceGroup().location]",
@@ -177,37 +177,35 @@
 			"properties": {
 				"publisher": "Microsoft.OSTCExtensions",
 				"type": "CustomScriptForLinux",
-				"typeHandlerVersion": "1.3",
+				"typeHandlerVersion": "1.5",
 				"settings": {
-				"fileUris": [
-					"[variables('vmScripts').scriptsToDownload]"
-				],
-				"commandToExecute": "[variables('installationCLI')]"
-        		}
+					"fileUris": "[variables('vmScripts').scriptsToDownload]",
+					"commandToExecute": "[variables('installationCLI')]",
+					"timestamp": 4
+				}
       		}
     },{
-      "apiVersion": "[variables('armApiVersion')]",
-      "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat('cnVM', copyindex(), '/Installation')]",
-      "location": "[resourceGroup().location]",
-      "dependsOn": [
-	    "[concat('Microsoft.Compute/virtualMachines/', 'jumpbox','/extensions/Installation')]",
-        "[concat('Microsoft.Compute/virtualMachines/', 'cnVM', copyindex())]"
-      ],
-      "copy": {
-        "name": "foo",
-        "count": "[parameters('instanceCount')]"
-      },
+		"apiVersion": "[variables('storageApiVersion')]",
+		"type": "Microsoft.Compute/virtualMachines/extensions",
+      	"name": "[concat('cnVM', copyindex(), '/Installation')]",
+      	"location": "[resourceGroup().location]",
+      	"dependsOn": [
+	  		"[concat('Microsoft.Compute/virtualMachines/', 'jumpbox','/extensions/Installation')]",
+    		"[concat('Microsoft.Compute/virtualMachines/', 'cnVM', copyindex())]"
+      	],
+		"copy": {
+			"name": "foo",
+			"count": "[parameters('instanceCount')]"
+		},
       "properties": {
         "publisher": "Microsoft.OSTCExtensions",
         "type": "CustomScriptForLinux",
-        "typeHandlerVersion": "1.3",
-        "settings": {
-          "fileUris": [
-            "[variables('vmScripts').scriptsToDownload]"
-          ],
-          "commandToExecute": "[variables('installationCLI')]"
-        }
+        "typeHandlerVersion": "1.5",
+		"settings": {
+			"fileUris": "[variables('vmScripts').scriptsToDownload]",
+			"commandToExecute": "[variables('installationCLI')]",
+			"timestamp": 4
+		}
       }
     }, {
 		"type": "Microsoft.Network/virtualNetworks",
