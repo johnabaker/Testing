@@ -249,7 +249,10 @@
 				"bootDiagnostics": {
 					"enabled": "false"
 				}
-			}
+			},
+			"availabilitySet": {
+    			"id": "[resourceId('Microsoft.Compute/availabilitySets', 'avset')]"
+ 			}
 		},
 		"resources": [{
 			"type": "extensions",
@@ -340,7 +343,10 @@
 				"bootDiagnostics": {
 					"enabled": "false"
 				}
-			}
+			},
+			"availabilitySet": {
+    			"id": "[resourceId('Microsoft.Compute/availabilitySets', 'avset')]"
+ 			}
 		}
 	}
 	]
