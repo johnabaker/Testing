@@ -207,7 +207,7 @@
 	}, {
 		"type": "Microsoft.Compute/virtualMachines",
 		"name": "[variables('jumpBoxName')]",
-		"apiVersion": "[variables('computeApiVersion')]",
+		"apiVersion": "2016-04-30-preview",
 		"location": "[variables('resourceLocation')]",
 		"properties": {
 			"hardwareProfile": {
@@ -219,9 +219,9 @@
 				"adminPassword": "[parameters('adminPassword')]"
 			},
 			"storageProfile": {
-				"imageReference": "[variables('imageReference')]",
+				"imageReference": "[variables('JBimageReference')]",
 				"osDisk": {
-					"name": "['jumboxdisk']", 
+					"name": "[concat('jumpboxvm','disk')]", 
 					"managedDisk": {
 						"storageAccountType": "Standard_LRS"
 					},
@@ -265,7 +265,6 @@
 			]
 		}],
 		"dependsOn": [
-			"[concat('Microsoft.Storage/storageAccounts/', variables('jumpBoxSAName'))]",
 			"[concat('Microsoft.Network/networkInterfaces/', variables('jumpBoxNicName'))]"
 		]
 	}, {
