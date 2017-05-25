@@ -317,7 +317,7 @@
 				"vmSize": "[parameters('vmSku')]"
 			},
 			"osProfile": {
-				"computerName": "[concat('cnVM_',copyIndex())]",
+				"computerName": "[concat('cnVM',copyIndex())]",
 				"adminUsername": "[parameters('adminUsername')]",
 				"adminPassword": "[parameters('adminPassword')]"
 			},
