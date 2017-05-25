@@ -150,6 +150,21 @@
 	},
 	"resources": [
 		{
+			"name": "[Parameters('availabilitySetName')]",
+			"type": "Microsoft.Compute/availabilitySets",
+			"location": "[resourceGroup().location]",
+			"apiVersion": "2016-04-30-preview",
+			"sku": {
+				"name": "Aligned"
+			},
+			"tags": {
+			},
+			"properties": {
+				"platformUpdateDomainCount": 1,
+				"platformFaultDomainCount": 1
+			}
+		},
+		{
 			"type": "Microsoft.Network/virtualNetworks",
 			"name": "[variables('virtualNetworkName')]",
 			"apiVersion": "[variables('networkApiVersion')]",
@@ -211,7 +226,7 @@
 				"vmSize": "Standard_D14_v2"
 			},
 			"osProfile": {
-				"computerName": "[variables('jumpBoxName')]",
+				"computerName": "['jumpbox']",
 				"adminUsername": "[parameters('adminUsername')]",
 				"adminPassword": "[parameters('adminPassword')]"
 			},
@@ -256,7 +271,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat('Microsoft.Compute/virtualMachines/', variables('jumpBoxName'))]",
+				"[concat('Microsoft.Compute/virtualMachines/', 'jumpbox')]",
 				"nicLoop"
 			]
 		}],
