@@ -170,14 +170,6 @@
 				}
 			}]
 		}
-	},{
-		"type": "Microsoft.Storage/storageAccounts",
-		"name": "[variables('jumpBoxSAName')]",
-		"apiVersion": "[variables('storageApiVersion')]",
-		"location": "[variables('resourceLocation')]",
-		"properties": {
-			"accountType": "[variables('storageAccountType')]"
-		}
 	}, {
 		"type": "Microsoft.Network/publicIPAddresses",
 		"name": "[variables('publicIPAddressName')]",
@@ -229,11 +221,10 @@
 			"storageProfile": {
 				"imageReference": "[variables('imageReference')]",
 				"osDisk": {
-					"name": "[variables('jumpBoxOSDiskName')]",
-					"vhd": {
-						"uri": "[concat('http://',variables('jumpBoxSAName'),'.blob.core.windows.net/',variables('jumpBoxVHDContainerName'),'/',variables('jumpBoxOSDiskName'),'.vhd')]"
+					"name": "['jumboxdisk']", 
+					"managedDisk": {
+						"storageAccountType": "Standard_LRS"
 					},
-					"caching": "ReadWrite",
 					"createOption": "FromImage"
 				}
 			},
