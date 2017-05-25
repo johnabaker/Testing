@@ -144,6 +144,6 @@ setup_env()
 }
 
 install_pkgs
-setup_shares
-setup_hpc_user
+#setup_shares
+#setup_hpc_user
 setup_env
