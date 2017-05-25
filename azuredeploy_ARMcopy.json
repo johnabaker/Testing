@@ -160,8 +160,8 @@
 			"tags": {
 			},
 			"properties": {
-				"platformUpdateDomainCount": 1,
-				"platformFaultDomainCount": 1
+				"platformUpdateDomainCount": 3,
+				"platformFaultDomainCount": 3
 			}
 		},
 		{
