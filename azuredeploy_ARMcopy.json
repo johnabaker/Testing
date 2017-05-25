@@ -150,7 +150,7 @@
 	},
 	"resources": [
 		{
-			"name": "[Parameters('availabilitySetName')]",
+			"name": "['avset']",
 			"type": "Microsoft.Compute/availabilitySets",
 			"location": "[resourceGroup().location]",
 			"apiVersion": "2016-04-30-preview",
