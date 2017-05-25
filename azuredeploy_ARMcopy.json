@@ -100,9 +100,6 @@
 		"namingInfix": "[toLower(substring(concat(parameters('vmssName'), uniqueString(resourceGroup().id)), 0, 9))]",
 		"longNamingInfix": "[toLower(parameters('vmssName'))]",
 		"jumpBoxName": "[concat(variables('longNamingInfix'),'jb')]",
-		"jumpBoxSAName": "[concat(uniqueString(concat(resourceGroup().id, variables('newStorageAccountSuffix'), 'jumpboxsa')), 'jb')]",
-		"jumpBoxOSDiskName": "[concat(variables('jumpBoxName'), 'osdisk')]",
-		"jumpBoxVHDContainerName": "[concat(variables('jumpBoxName'), 'vhd')]",
 		"jumpBoxIPConfigName": "[concat(variables('jumpBoxName'), 'ipconfig')]",
 		"jumpBoxNicName": "[concat(variables('jumpBoxName'), 'nic')]",
 		"storageAccountType": "Standard_LRS",
@@ -153,60 +150,60 @@
 	},
 	"resources": [
 		{
-		"type": "Microsoft.Network/virtualNetworks",
-		"name": "[variables('virtualNetworkName')]",
-		"apiVersion": "[variables('networkApiVersion')]",
-		"location": "[variables('resourceLocation')]",
-		"properties": {
-			"addressSpace": {
-				"addressPrefixes": [
-					"[variables('addressPrefix')]"
-				]
-			},
-			"subnets": [{
-				"name": "[variables('subnetName')]",
-				"properties": {
-					"addressPrefix": "[variables('subnetPrefix')]"
-				}
-			}]
-		}
-	}, {
-		"type": "Microsoft.Network/publicIPAddresses",
-		"name": "[variables('publicIPAddressName')]",
-		"apiVersion": "[variables('networkApiVersion')]",
-		"location": "[variables('resourceLocation')]",
-		"properties": {
-			"publicIPAllocationMethod": "Dynamic",
-			"dnsSettings": {
-				"domainNameLabel": "[variables('longNamingInfix')]"
-			}
-		}
-	}, {
-		"type": "Microsoft.Network/networkInterfaces",
-		"name": "[variables('jumpBoxNicName')]",
-		"apiVersion": "[variables('networkApiVersion')]",
-		"location": "[variables('resourceLocation')]",
-		"properties": {
-			"ipConfigurations": [{
-				"name": "[variables('jumpBoxIPConfigName')]",
-				"properties": {
-					"privateIPAllocationMethod": "Dynamic",
-					"publicIPAddress": {
-						"id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
-					},
-					"subnet": {
-						"id": "[variables('subnetRef')]"
+			"type": "Microsoft.Network/virtualNetworks",
+			"name": "[variables('virtualNetworkName')]",
+			"apiVersion": "[variables('networkApiVersion')]",
+			"location": "[variables('resourceLocation')]",
+			"properties": {
+				"addressSpace": {
+					"addressPrefixes": [
+						"[variables('addressPrefix')]"
+					]
+				},
+				"subnets": [{
+					"name": "[variables('subnetName')]",
+					"properties": {
+						"addressPrefix": "[variables('subnetPrefix')]"
 					}
+				}]
+			}
+		}, {
+			"type": "Microsoft.Network/publicIPAddresses",
+			"name": "[variables('publicIPAddressName')]",
+			"apiVersion": "[variables('networkApiVersion')]",
+			"location": "[variables('resourceLocation')]",
+			"properties": {
+				"publicIPAllocationMethod": "Dynamic",
+				"dnsSettings": {
+					"domainNameLabel": "[variables('longNamingInfix')]"
 				}
-			}]
-		},
-		"dependsOn": [
-			"[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]",
-			"[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
-		]
-	}, {
+			}
+		}, {
+			"type": "Microsoft.Network/networkInterfaces",
+			"name": "[variables('jumpBoxNicName')]",
+			"apiVersion": "[variables('networkApiVersion')]",
+			"location": "[variables('resourceLocation')]",
+			"properties": {
+				"ipConfigurations": [{
+					"name": "[variables('jumpBoxIPConfigName')]",
+					"properties": {
+						"privateIPAllocationMethod": "Dynamic",
+						"publicIPAddress": {
+							"id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
+						},
+						"subnet": {
+							"id": "[variables('subnetRef')]"
+						}
+					}
+				}]
+			},
+			"dependsOn": [
+				"[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]",
+				"[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
+			]
+		}, {
 		"type": "Microsoft.Compute/virtualMachines",
-		"name": "[variables('jumpBoxName')]",
+		"name": "['jumpbox']",
 		"apiVersion": "2016-04-30-preview",
 		"location": "[variables('resourceLocation')]",
 		"properties": {
@@ -305,7 +302,7 @@
 				"vmSize": "[parameters('vmSku')]"
 			},
 			"osProfile": {
-				"computerName": "[variables('jumpBoxName')]",
+				"computerName": "[concat('cnVM_',copyIndex())]",
 				"adminUsername": "[parameters('adminUsername')]",
 				"adminPassword": "[parameters('adminPassword')]"
 			},
