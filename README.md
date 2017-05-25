@@ -67,7 +67,7 @@ This template is designed to assist in the assessment of the ANSYS Fluent CFD pa
 Four Storage Accounts are created for the VMSS and one for the Jumpbox. An NFS file share is created from the head node's OS disk and shared with all of the VMSS nodes. This NFS share is located at /mnt/nfsshare/ No other file sharing or server is used. The Jumpbox and each of the nodes in the VMSS also have a data disk mounted at /mnt/resource/ that provides local storage space.
 
 <b>Monitoring</b>
-<b>
+<br></br>
 By default Ganglia is installed on the Jumbpox and all of the compute nodes. You can access this monitor by opening a web browser and navigating to the ip address of the Jumpbox /ganglia. For example
 <code>http://11.22.33.44/ganglia</code>
 
