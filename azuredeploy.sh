@@ -168,6 +168,7 @@ setup_env()
         echo export I_MPI_DAPL_TRANSLATION_CACHE=0 >> $SHARE_HOME/$HPC_USER/.bashrc
     else
         echo'already Set'
+    fi
 }
 
 get_cluster()
