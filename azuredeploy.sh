@@ -7,7 +7,7 @@ if [[ $(id -u) -ne 0 ]] ; then
     exit 1
 fi
 
-if [ $# != 7 ]; then
+if [ $# != 8 ]; then
     echo "Usage: $0 <MasterHostname> <WorkerHostnamePrefix> <WorkerNodeCount> <HPCUserName> <TemplateBaseUrl> <solver> <model>"
     exit 1
 fi
@@ -18,6 +18,7 @@ WORKER_HOSTNAME_PREFIX=$2
 WORKER_COUNT=$3
 SOLVER=$6
 DOWN=$7
+LICIP=$8
 TEMPLATE_BASE_URL="$5"
 LAST_WORKER_INDEX=$(($WORKER_COUNT - 1))
 
@@ -191,7 +192,7 @@ install_solver()
 {
     if is_master; then
         chmod +x install-$SOLVER.sh
-        source install-$SOLVER.sh $USER $LICIP $DOWN $SHARE_DATA
+        source install-$SOLVER.sh $SHARE_HOME $LICIP $DOWN $SHARE_DATA
     else
         echo 'not master'
     fi
