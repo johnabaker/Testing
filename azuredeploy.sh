@@ -8,7 +8,7 @@ if [[ $(id -u) -ne 0 ]] ; then
 fi
 
 if [ $# != 5 ]; then
-    echo "Usage: $0 <MasterHostname> <WorkerHostnamePrefix> <WorkerNodeCount> <HPCUserName> <TemplateBaseUrl>"
+    echo "Usage: $0 <MasterHostname> <WorkerHostnamePrefix> <WorkerNodeCount> <HPCUserName> <TemplateBaseUrl> <solver>"
     exit 1
 fi
 
@@ -16,12 +16,13 @@ fi
 MASTER_HOSTNAME=$1
 WORKER_HOSTNAME_PREFIX=$2
 WORKER_COUNT=$3
+SOLVER=$6
 TEMPLATE_BASE_URL="$5"
 LAST_WORKER_INDEX=$(($WORKER_COUNT - 1))
 
 # Shares
-SHARE_HOME=/share/home
-SHARE_DATA=/share/data
+SHARE_HOME=/mnt/resource/home
+SHARE_DATA=/mnt/resource/scratch
 
 # Hpc User
 HPC_USER=$4
@@ -59,6 +60,9 @@ setup_shares()
 {
     mkdir -p $SHARE_HOME
     mkdir -p $SHARE_DATA
+    mkdir -p $SHARE_DATA/applications
+    mkdir -p $SHARE_DATA/INSTALLERS
+    mkdir -p $SHARE_DATA/benchmark
 
     if is_master; then
         #setup_data_disks $SHARE_DATA
@@ -147,19 +151,46 @@ setup_env()
     echo "$HPC_USER hard memlock unlimited" >> /etc/security/limits.conf
     echo "$HPC_USER soft memlock unlimited" >> /etc/security/limits.conf
 
-    # Intel MPI config for IB
-    echo "# IB Config for MPI" >> /share/home/$HPC_USER/.bashrc
-    echo export INTELMPI_ROOT=/opt/intel/impi/5.1.3.181 >> /share/home/$HPC_USER/.bashrc
-    echo export I_MPI_FABRICS=shm:dapl >> /share/home/$HPC_USER/.bashrc
-    echo export I_MPI_DAPL_PROVIDER=ofa-v2-ib0 >> /share/home/$HPC_USER/.bashrc
-    echo export I_MPI_ROOT=/opt/intel/compilers_and_libraries_2016.2.181/linux/mpi >> /share/home/$HPC_USER/.bashrc
-    echo export PATH=/opt/intel/impi/5.1.3.181/bin64:$PATH >> /share/home/$HPC_USER/.bashrc
-    echo export I_MPI_DYNAMIC_CONNECTION=0 >> /share/home/$HPC_USER/.bashrc
-    echo export I_MPI_PIN_PROCESSOR=8 >> /share/home/$HPC_USER/.bashrc
-    echo export I_MPI_DAPL_TRANSLATION_CACHE=0 >> /share/home/$HPC_USER/.bashrc
+    # symbolic linking of directories
+    ln -s /opt/intel/impi/5.1.3.181/intel64/bin/ /opt/intel/impi/5.1.3.181/bin
+    ln -s /opt/intel/impi/5.1.3.181/lib64/ /opt/intel/impi/5.1.3.181/lib
+    
+    if is_master; then
+        # Intel MPI config for IB
+        echo "# IB Config for MPI" >> $SHARE_HOME/$HPC_USER/.bashrc
+        echo export INTELMPI_ROOT=/opt/intel/impi/5.1.3.181 >> $SHARE_HOME/$HPC_USER/.bashrc
+        echo export I_MPI_FABRICS=shm:dapl >> $SHARE_HOME/$HPC_USER/.bashrc
+        echo export I_MPI_DAPL_PROVIDER=ofa-v2-ib0 >> $SHARE_HOME/$HPC_USER/.bashrc
+        echo export I_MPI_ROOT=/opt/intel/compilers_and_libraries_2016.2.181/linux/mpi >> $SHARE_HOME/$HPC_USER/.bashrc
+        echo export PATH=/opt/intel/impi/5.1.3.181/bin64:$PATH >> $SHARE_HOME/$HPC_USER/.bashrc
+        echo export I_MPI_DYNAMIC_CONNECTION=0 >> $SHARE_HOME/$HPC_USER/.bashrc
+        echo export I_MPI_PIN_PROCESSOR=8 >> $SHARE_HOME/$HPC_USER/.bashrc
+        echo export I_MPI_DAPL_TRANSLATION_CACHE=0 >> $SHARE_HOME/$HPC_USER/.bashrc
+    else
+        echo'already Set'
 }
 
+get_cluster()
+{
+    IP=`ifconfig eth0 | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'`
+    localip=`echo $IP | cut --delimiter='.' -f -3`
+    nmap -sn $localip.* | grep $localip. | awk '{print $5}' > $SHARE_HOME/$HPC_USER/nodeips.txt
+    for NAME in `cat $SHARE_HOME/$HPC_USER/nodeips.txt`; do ssh -o ConnectTimeout=2 $NAME 'hostname' >> $SHARE_HOME/$HPC_USER/nodenames.txt;done
+}
+install_ganglia(){
+    myhost=`hostname`
+    chmod +x install_ganglia.sh
+    ./install_ganglia.sh $myhost azure 8649
+}
+install_solver()
+{
+    chmod +x install-$SOLVER.sh
+    source install-$SOLVER.sh $USER $LICIP $DOWN $SHARE_DATA
+}
 install_pkgs
 setup_shares
 setup_hpc_user
 setup_env
+get_cluster
+install_ganglia
+install_solver
