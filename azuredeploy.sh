@@ -61,17 +61,27 @@ setup_shares()
     mkdir -p $SHARE_DATA
 
     if is_master; then
-        setup_data_disks $SHARE_DATA
-        echo "$SHARE_HOME    *(rw,async)" >> /etc/exports
-        echo "$SHARE_DATA    *(rw,async)" >> /etc/exports
+        #setup_data_disks $SHARE_DATA
+        echo Setting up Master Share
+        echo "$SHARE_HOME    *(rw,sync,no_root_squash,no_all_squash)" | tee -a /etc/exports
+        echo "$SHARE_DATA    *(rw,sync,no_root_squash,no_all_squash)" | tee -a /etc/exports
+        chmod -R 777 $SHARE_DATA
 
         systemctl enable rpcbind || echo "Already enabled"
         systemctl enable nfs-server || echo "Already enabled"
+        systemctl enable nfs-lock
+        systemctl enable nfs-idmap
         systemctl start rpcbind || echo "Already enabled"
         systemctl start nfs-server || echo "Already enabled"
+        systemctl start nfs-lock
+        systemctl start nfs-idmap
+        systemctl restart nfs-server
+    
     else
-        echo "master:$SHARE_HOME $SHARE_HOME    nfs4    rw,auto,_netdev 0 0" >> /etc/fstab
-        echo "master:$SHARE_DATA $SHARE_DATA    nfs4    rw,auto,_netdev 0 0" >> /etc/fstab
+        echo mounting
+        echo "$MASTER_HOSTNAME:$SHARE_HOME $SHARE_HOME    nfs     defaults 0 0" | tee -a /etc/fstab
+        echo "$MASTER_HOSTNAME:$SHARE_DATA $SHARE_DATA    nfs     defaults 0 0" | tee -a /etc/fstab
+
         mount -a
         mount | grep "^master:$SHARE_HOME"
         mount | grep "^master:$SHARE_DATA"
@@ -138,13 +148,18 @@ setup_env()
     echo "$HPC_USER soft memlock unlimited" >> /etc/security/limits.conf
 
     # Intel MPI config for IB
-    echo "# IB Config for MPI" > /etc/profile.d/mpi.sh
-    echo "export I_MPI_FABRICS=shm:dapl" >> /etc/profile.d/mpi.sh
-    echo "export I_MPI_DAPL_PROVIDER=ofa-v2-ib0" >> /etc/profile.d/mpi.sh
-    echo "export I_MPI_DYNAMIC_CONNECTION=0" >> /etc/profile.d/mpi.sh
+    echo "# IB Config for MPI" >> /share/home/$HPC_USER/.bashrc
+    echo export INTELMPI_ROOT=/opt/intel/impi/5.1.3.181 >> /share/home/$HPC_USER/.bashrc
+    echo export I_MPI_FABRICS=shm:dapl >> /share/home/$HPC_USER/.bashrc
+    echo export I_MPI_DAPL_PROVIDER=ofa-v2-ib0 >> /share/home/$HPC_USER/.bashrc
+    echo export I_MPI_ROOT=/opt/intel/compilers_and_libraries_2016.2.181/linux/mpi >> /share/home/$HPC_USER/.bashrc
+    echo export PATH=/opt/intel/impi/5.1.3.181/bin64:$PATH >> /share/home/$HPC_USER/.bashrc
+    echo export I_MPI_DYNAMIC_CONNECTION=0 >> /share/home/$HPC_USER/.bashrc
+    echo export I_MPI_PIN_PROCESSOR=8 >> /share/home/$HPC_USER/.bashrc
+    echo export I_MPI_DAPL_TRANSLATION_CACHE=0 >> /share/home/$HPC_USER/.bashrc
 }
 
 install_pkgs
-#setup_shares
-#setup_hpc_user
+setup_shares
+setup_hpc_user
 setup_env
