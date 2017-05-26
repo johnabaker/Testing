@@ -98,7 +98,7 @@
 	"variables": {
 		"armApiVersion": "2015-06-15",
 		"templateBaseUrl": "https://raw.githubusercontent.com/tanewill/AHOD-HPC/master/",
-    	"installationCLI": "[concat('bash azuredeploy.sh ', 'jumpbox cnVM ', parameters('instanceCount'), ' hpc-user ', variables('templateBaseUrl'))]",
+    	"installationCLI": "[concat('bash azuredeploy.sh ', 'jumpbox cnVM ', parameters('instanceCount'), ' hpc-user ', variables('templateBaseUrl'),' ',parameters('solver'),' ',parameters('downloadModel'))]",
 		"resourceLocation": "[resourceGroup().location]",
 		"namingInfix": "[toLower(substring(concat(parameters('vmssName'), uniqueString(resourceGroup().id)), 0, 9))]",
 		"longNamingInfix": "[toLower(parameters('vmssName'))]",
