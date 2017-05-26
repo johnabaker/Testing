@@ -177,11 +177,13 @@ get_cluster()
     nmap -sn $localip.* | grep $localip. | awk '{print $5}' > $SHARE_HOME/$HPC_USER/nodeips.txt
     for NAME in `cat $SHARE_HOME/$HPC_USER/nodeips.txt`; do ssh -o ConnectTimeout=2 $NAME 'hostname' >> $SHARE_HOME/$HPC_USER/nodenames.txt;done
 }
+
 install_ganglia(){
     myhost=`hostname`
     chmod +x install_ganglia.sh
-    ./install_ganglia.sh $myhost azure 8649
+    ./install_ganglia.sh $MASTER_HOSTNAME azure 8649
 }
+
 install_solver()
 {
     chmod +x install-$SOLVER.sh
