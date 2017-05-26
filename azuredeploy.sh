@@ -167,7 +167,7 @@ setup_env()
         echo export I_MPI_PIN_PROCESSOR=8 >> $SHARE_HOME/$HPC_USER/.bashrc
         echo export I_MPI_DAPL_TRANSLATION_CACHE=0 >> $SHARE_HOME/$HPC_USER/.bashrc
     else
-        echo'already Set'
+        echo 'already Set'
     fi
 }
 
@@ -175,21 +175,27 @@ get_cluster()
 {
     IP=`ifconfig eth0 | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'`
     localip=`echo $IP | cut --delimiter='.' -f -3`
-    nmap -sn $localip.* | grep $localip. | awk '{print $5}' > $SHARE_HOME/$HPC_USER/nodeips.txt
-    for NAME in `cat $SHARE_HOME/$HPC_USER/nodeips.txt`; do ssh -o ConnectTimeout=2 $NAME 'hostname' >> $SHARE_HOME/$HPC_USER/nodenames.txt;done
+    #nmap -sn $localip.* | grep $localip. | awk '{print $5}' > $SHARE_HOME/$HPC_USER/nodeips.txt
+    #for NAME in `cat $SHARE_HOME/$HPC_USER/nodeips.txt`; do ssh -o ConnectTimeout=2 $NAME 'hostname' >> $SHARE_HOME/$HPC_USER/nodenames.txt;done
+    hostname >> $SHARE_DATA/nodenames.txt
+    echo $IP >> $SHARE_DATA/nodeips.txt
 }
 
 install_ganglia(){
-    myhost=`hostname`
     chmod +x install_ganglia.sh
     ./install_ganglia.sh $MASTER_HOSTNAME azure 8649
 }
 
 install_solver()
 {
-    chmod +x install-$SOLVER.sh
-    source install-$SOLVER.sh $USER $LICIP $DOWN $SHARE_DATA
+    if is_master; then
+        chmod +x install-$SOLVER.sh
+        source install-$SOLVER.sh $USER $LICIP $DOWN $SHARE_DATA
+    else
+        echo 'not master'
+    fi
 }
+
 install_pkgs
 setup_shares
 setup_hpc_user
