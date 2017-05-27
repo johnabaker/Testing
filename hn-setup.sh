@@ -1,10 +1,13 @@
 #!/bin/bash
-SOLVER=$1
-USER=$2
-PASS=$3
-DOWN=$4
-LICIP=$5
+USER=$1
+PASS=$2
+LICIP=$3
 
+if [ "$HOSTNAME" != "2h16rcfd1" ]
+then
+echo "Im not the master" > /tmp/deploy.log
+exit
+fi
 
 IP=`ifconfig eth0 | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'`
 localip=`echo $IP | cut --delimiter='.' -f -3`
@@ -12,7 +15,8 @@ localip=`echo $IP | cut --delimiter='.' -f -3`
 echo User is: $USER
 echo Pass is: $PASS
 echo License IP is: $LICIP
-echo Model is: $DOWN
+
+export RLM_LICENSE=2765@10.1.77.104
 
 echo "*               hard    memlock         unlimited" >> /etc/security/limits.conf
 echo "*               soft    memlock         unlimited" >> /etc/security/limits.conf
@@ -33,13 +37,9 @@ ln -s /opt/intel/impi/5.1.3.181/lib64/ /opt/intel/impi/5.1.3.181/lib
 wget http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-9.noarch.rpm
 
 rpm -ivh epel-release-7-9.noarch.rpm
-yum install -y -q nfs-utils sshpass nmap htop npm
-yum groupinstall -y "X Window System"
-npm install -g azure-cli
+yum install -y -q nfs-utils sshpass nmap 
 
 myhost=`hostname`
-chmod +x install_ganglia.sh
-./install_ganglia.sh $myhost azure 8649
 
 echo "/mnt/nfsshare $localip.*(rw,sync,no_root_squash,no_all_squash)" | tee -a /etc/exports
 echo "/mnt/resource/scratch $localip.*(rw,sync,no_root_squash,no_all_squash)" | tee -a /etc/exports
@@ -111,8 +111,3 @@ echo "$USER ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
     
 # Disable tty requirement for sudo
 sed -i 's/^Defaults[ ]*requiretty/# Defaults requiretty/g' /etc/sudoers
-
-chmod +x install-$SOLVER.sh
-source install-$SOLVER.sh $USER $LICIP $DOWN
-
-
