@@ -16,7 +16,7 @@ echo User is: $USER
 echo Pass is: $PASS
 echo License IP is: $LICIP
 
-export RLM_LICENSE=2765@10.1.77.104
+export RLM_LICENSE=$LICIP
 
 echo "*               hard    memlock         unlimited" >> /etc/security/limits.conf
 echo "*               soft    memlock         unlimited" >> /etc/security/limits.conf
