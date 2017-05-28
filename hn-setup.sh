@@ -62,6 +62,7 @@ nmap -sn $localip.* | grep $localip. | awk '{print $5}' > /home/$USER/bin/nodeip
 myhost=`hostname -i`
 sed -i '/\<'$myhost'\>/d' /home/$USER/bin/nodeips.txt
 sed -i '/\<10.0.0.1\>/d' /home/$USER/bin/nodeips.txt
+sed -i '/\<10.232.6.1\>/d' /home/$USER/bin/nodeips.txt
 
 echo -e  'y\n' | ssh-keygen -f /home/$USER/.ssh/id_rsa -t rsa -N ''
 echo 'Host *' >> /home/$USER/.ssh/config
@@ -76,7 +77,7 @@ chmod 400 ~/.ssh/config
 
 for NAME in `cat /home/$USER/bin/nodeips.txt`; do sshpass -p $PASS ssh -o ConnectTimeout=2 $USER@$NAME 'hostname' >> /home/$USER/bin/nodenames.txt;done
 
-NAMES=`cat /home/$USER/bin/nodeips.txt` #names from names.txt file
+NAMES=`cat /home/$USER/bin/nodeips.txt | grep h16mr` #names from names.txt file
 for NAME in $NAMES; do
         sshpass -p $PASS scp -o "StrictHostKeyChecking no" -o ConnectTimeout=2 /home/$USER/bin/cn-setup.sh $USER@$NAME:/home/$USER/
         sshpass -p $PASS scp -o "StrictHostKeyChecking no" -o ConnectTimeout=2 /home/$USER/bin/nodenames.txt $USER@$NAME:/home/$USER/
@@ -107,7 +108,7 @@ chmod -R 744 /mnt/resource/scratch/
 
 
 # Don't require password for HPC user sudo
-echo "$USER ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+#echo "$USER ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
     
 # Disable tty requirement for sudo
-sed -i 's/^Defaults[ ]*requiretty/# Defaults requiretty/g' /etc/sudoers
+#sed -i 's/^Defaults[ ]*requiretty/# Defaults requiretty/g' /etc/sudoers
