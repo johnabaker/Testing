@@ -28,7 +28,6 @@ if [ $FLAG = NOTMOUNTED ] ; then
     mount -a
     df | grep $IPPRE
     
-    echo export FLUENT_HOSTNAME=$HOST >> /home/$USER/.bashrc
     echo export INTELMPI_ROOT=/opt/intel/impi/5.1.3.181 >> /home/$USER/.bashrc
     echo export I_MPI_FABRICS=shm:dapl >> /home/$USER/.bashrc
     echo export I_MPI_DAPL_PROVIDER=ofa-v2-ib0 >> /home/$USER/.bashrc
