@@ -1,9 +1,12 @@
 #!/bin/bash
+
+echo $USER > /tmp/deploy.log
+
 USER=$1
 PASS=$2
 LICIP=$3
 
-echo $USER > /tmp/deploy.log
+echo $USER >> /tmp/deploy.log
 echo $PASS >> /tmp/deploy.log
 echo $LICIP >> /tmp/deploy.log
 
@@ -81,7 +84,7 @@ chmod 400 ~/.ssh/config
 
 for NAME in `cat /home/$USER/bin/nodeips.txt`; do sshpass -p $PASS ssh -o ConnectTimeout=2 $USER@$NAME 'hostname' >> /home/$USER/bin/nodenames.txt;done
 
-NAMES=`cat /home/$USER/bin/nodeips.txt | grep h16mr` #names from names.txt file
+NAMES=`cat /home/$USER/bin/nodeips.txt` #names from names.txt file
 for NAME in $NAMES; do
         sshpass -p $PASS scp -o "StrictHostKeyChecking no" -o ConnectTimeout=2 /home/$USER/bin/cn-setup.sh $USER@$NAME:/home/$USER/
         sshpass -p $PASS scp -o "StrictHostKeyChecking no" -o ConnectTimeout=2 /home/$USER/bin/nodenames.txt $USER@$NAME:/home/$USER/
