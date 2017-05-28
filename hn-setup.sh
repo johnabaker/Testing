@@ -3,7 +3,11 @@ USER=$1
 PASS=$2
 LICIP=$3
 
-if [ "$HOSTNAME" != "2h16mrcfd1" ]
+echo $USER > /tmp/deploy.log
+echo $PASS >> /tmp/deploy.log
+echo $LICIP >> /tmp/deploy.log
+
+if [ "$HOSTNAME" != "3h16mrcfd1" ]
 then
 echo "Im not the master" > /tmp/deploy.log
 exit
