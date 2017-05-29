@@ -10,7 +10,7 @@ echo $USER >> /tmp/deploy.log
 echo $PASS >> /tmp/deploy.log
 echo $LICIP >> /tmp/deploy.log
 
-if [ "$HOSTNAME" != "batch1h16mrcfd2" ]
+if [ "$HOSTNAME" != "batch1h16mrcfd1" ]
 then
 echo "Im not the master" > /tmp/deploy.log
 exit
